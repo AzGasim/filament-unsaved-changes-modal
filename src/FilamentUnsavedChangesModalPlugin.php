@@ -4,6 +4,8 @@ namespace AzGasim\FilamentUnsavedChangesModal;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Contracts\Support\Htmlable;
 
 class FilamentUnsavedChangesModalPlugin implements Plugin
 {
@@ -14,7 +16,15 @@ class FilamentUnsavedChangesModalPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        $panel
+            ->renderHook(
+                PanelsRenderHook::PAGE_START,
+                fn (): Htmlable => view('filament-unsaved-changes-modal::hooks.spa-unsaved-script'),
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn (): Htmlable => view('filament-unsaved-changes-modal::components.unsaved-changes-navigation-modal'),
+            );
     }
 
     public function boot(Panel $panel): void

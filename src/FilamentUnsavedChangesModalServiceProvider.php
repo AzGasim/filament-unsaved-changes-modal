@@ -21,10 +21,8 @@ class FilamentUnsavedChangesModalServiceProvider extends PackageServiceProvider
                     ->askToStarRepoOnGitHub('azgasim/filament-unsaved-changes-modal');
             });
 
-        $configFileName = $package->shortName();
-
-        if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
-            $package->hasConfigFile();
+        if (file_exists($package->basePath('/../config/unsaved-changes-modal.php'))) {
+            $package->hasConfigFile('unsaved-changes-modal');
         }
 
         if (file_exists($package->basePath('/../resources/lang'))) {
