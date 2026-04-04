@@ -1,15 +1,15 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace AzGasim\FilamentUnsavedChangesModal;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class SkeletonPlugin implements Plugin
+class FilamentUnsavedChangesModalPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'skeleton';
+        return 'filament-unsaved-changes-modal';
     }
 
     public function register(Panel $panel): void

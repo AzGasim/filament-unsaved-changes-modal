@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('migration_table_name_table', function (Blueprint $table) {
+        Schema::create('filament_unsaved_changes_modal_table', function (Blueprint $table) {
             $table->id();
 
             // add fields

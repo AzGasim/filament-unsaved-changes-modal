@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace AzGasim\FilamentUnsavedChangesModal\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
@@ -19,7 +19,7 @@ use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use VendorName\Skeleton\SkeletonServiceProvider;
+use AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -31,7 +31,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'VendorName\\Skeleton\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'AzGasim\\FilamentUnsavedChangesModal\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -51,7 +51,7 @@ class TestCase extends Orchestra
             SupportServiceProvider::class,
             TablesServiceProvider::class,
             WidgetsServiceProvider::class,
-            SkeletonServiceProvider::class,
+            FilamentUnsavedChangesModalServiceProvider::class,
         ];
 
         sort($providers);
