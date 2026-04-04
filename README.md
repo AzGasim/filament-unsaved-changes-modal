@@ -34,7 +34,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-Publish the config (optional) to change the modal DOM id (`spa_navigation_modal_id`) or width (`modal_width`, Filament width values such as `md`, `lg`, `2xl`):
+Publish the config (optional) to change the modal width (`modal_width`, Filament width values such as `md`, `lg`, `2xl`). The modal’s HTML id is fixed in code (`FilamentUnsavedChangesModalPlugin::MODAL_DOM_ID`); publish the [views](resources/views) if you must change it.
 
 ```bash
 php artisan vendor:publish --tag="filament-unsaved-changes-modal-config"

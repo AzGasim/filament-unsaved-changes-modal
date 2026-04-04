@@ -1,19 +1,15 @@
 @php
     $unsavedBody = __('filament-panels::unsaved-changes-alert.body');
+    $modalId = \AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin::MODAL_DOM_ID;
 @endphp
 
 @script
     <script>
         ;(function () {
-            const modalId = @js(config('unsaved-changes-modal.spa_navigation_modal_id'))
+            const modalId = @js($modalId)
 
-            function buildApi({
-                $wire,
-                bodyText,
-                spaMode,
-                resolveLivewireComponentUsing,
-            }) {
-                const shouldPreventNavigation = function () {
+            function buildApi({ $wire, bodyText, spaMode, resolveLivewireComponentUsing }) {
+                function shouldPreventNavigation() {
                     if ($wire?.__instance?.effects?.redirect) {
                         return false
                     }
@@ -28,20 +24,15 @@
                     }
 
                     return (
-                        window.jsMd5(JSON.stringify($wire.data).replace(/\\/g, '')) !==
-                        hash
+                        window.jsMd5(JSON.stringify($wire.data).replace(/\\/g, '')) !== hash
                     )
                 }
 
                 let pendingHref = null
-
-                /** Skip the next beforeunload prompt (user already confirmed in our modal). */
                 let bypassBeforeUnloadOnce = false
-
-                /** Skip one livewire:navigate interception after user confirmed (SPA). */
                 let bypassNavigatePromptOnce = false
 
-                const openModal = function () {
+                function openModal() {
                     const root = document.getElementById(modalId)
                     const desc = root?.querySelector('.fi-modal-description')
                     if (desc && bodyText) {
@@ -57,7 +48,7 @@
                     )
                 }
 
-                const closeModal = function () {
+                function closeModal() {
                     document.dispatchEvent(
                         new CustomEvent('close-modal', {
                             bubbles: true,
@@ -68,11 +59,11 @@
                 }
 
                 window.filamentUnsavedChangesModal = {
-                    stay: function () {
+                    stay() {
                         pendingHref = null
                         closeModal()
                     },
-                    leave: function () {
+                    leave() {
                         const href = pendingHref
                         pendingHref = null
                         closeModal()
@@ -80,19 +71,21 @@
                             return
                         }
                         bypassBeforeUnloadOnce = true
-                        if (spaMode && window.Alpine && typeof window.Alpine.navigate === 'function') {
+                        if (
+                            spaMode &&
+                            window.Alpine &&
+                            typeof window.Alpine.navigate === 'function'
+                        ) {
                             bypassNavigatePromptOnce = true
                             window.Alpine.navigate(href)
                         } else {
-                            window.setTimeout(function () {
-                                window.location.assign(href)
-                            }, 0)
+                            window.setTimeout(() => window.location.assign(href), 0)
                         }
                     },
                 }
 
-                const hrefFromNavigateDetail = function (detail) {
-                    const url = detail && detail.url
+                function hrefFromNavigateDetail(detail) {
+                    const url = detail?.url
                     if (! url) {
                         return null
                     }
@@ -101,14 +94,31 @@
                     }
                     try {
                         return new URL(String(url), window.location.href).href
-                    } catch (e) {
+                    } catch {
                         return null
                     }
                 }
 
+                function isDangerousHrefAttribute(hrefAttr) {
+                    const lower = hrefAttr.trim().toLowerCase()
+                    return (
+                        lower.startsWith('javascript:') ||
+                        lower.startsWith('vbscript:') ||
+                        lower.startsWith('data:')
+                    )
+                }
+
+                function isAllowedHttpNavigation(url) {
+                    return url.protocol === 'http:' || url.protocol === 'https:'
+                }
+
                 if (spaMode) {
                     document.addEventListener('livewire:navigate', function (event) {
-                        if (typeof resolveLivewireComponentUsing() === 'undefined') {
+                        try {
+                            if (typeof resolveLivewireComponentUsing() === 'undefined') {
+                                return
+                            }
+                        } catch {
                             return
                         }
 
@@ -127,6 +137,21 @@
                             return
                         }
 
+                        let nextUrl
+                        try {
+                            nextUrl = new URL(href)
+                        } catch {
+                            return
+                        }
+
+                        if (! isAllowedHttpNavigation(nextUrl)) {
+                            return
+                        }
+
+                        if (nextUrl.origin !== window.location.origin) {
+                            return
+                        }
+
                         event.preventDefault()
 
                         pendingHref = href
@@ -136,10 +161,7 @@
                     document.addEventListener(
                         'click',
                         function (event) {
-                            if (event.defaultPrevented) {
-                                return
-                            }
-                            if (event.button !== 0) {
+                            if (event.defaultPrevented || event.button !== 0) {
                                 return
                             }
                             if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
@@ -161,11 +183,10 @@
                             }
 
                             const hrefAttr = anchor.getAttribute('href')
-                            if (
-                                ! hrefAttr ||
-                                hrefAttr.startsWith('#') ||
-                                hrefAttr.startsWith('javascript:')
-                            ) {
+                            if (! hrefAttr || hrefAttr.startsWith('#')) {
+                                return
+                            }
+                            if (isDangerousHrefAttribute(hrefAttr)) {
                                 return
                             }
 
@@ -173,19 +194,22 @@
                                 return
                             }
 
-                            let absoluteHref
+                            let nextUrl
                             try {
-                                absoluteHref = new URL(anchor.href).href
-                            } catch (e) {
+                                nextUrl = new URL(anchor.href)
+                            } catch {
                                 return
                             }
 
-                            if (absoluteHref === window.location.href) {
+                            if (! isAllowedHttpNavigation(nextUrl)) {
                                 return
                             }
 
-                            const nextUrl = new URL(absoluteHref)
                             if (nextUrl.origin !== window.location.origin) {
+                                return
+                            }
+
+                            if (nextUrl.href === window.location.href) {
                                 return
                             }
 
@@ -194,7 +218,7 @@
                             }
 
                             event.preventDefault()
-                            pendingHref = absoluteHref
+                            pendingHref = nextUrl.href
                             openModal()
                         },
                         true,

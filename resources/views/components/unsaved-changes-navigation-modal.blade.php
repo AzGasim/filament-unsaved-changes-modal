@@ -1,12 +1,12 @@
 @php
-    $modalId = config('unsaved-changes-modal.spa_navigation_modal_id');
+    $modalId = \AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin::MODAL_DOM_ID;
     $modalWidth = config('unsaved-changes-modal.modal_width', 'lg');
 @endphp
 
 <x-filament::modal
     :id="$modalId"
-    :heading="__('filament-unsaved-changes-modal::unsaved-changes-modal.spa.heading')"
-    :description="__('filament-unsaved-changes-modal::unsaved-changes-modal.spa.body')"
+    :heading="__('filament-unsaved-changes-modal::unsaved-changes-modal.navigation.heading')"
+    :description="__('filament-unsaved-changes-modal::unsaved-changes-modal.navigation.body')"
     :width="$modalWidth"
     alignment="center"
     footer-actions-alignment="center"
@@ -19,17 +19,17 @@
             <x-filament::button
                 color="gray"
                 type="button"
-                x-on:click="window.filamentUnsavedChangesModal && window.filamentUnsavedChangesModal.stay()"
+                x-on:click="window.filamentUnsavedChangesModal?.stay()"
             >
-                {{ __('filament-unsaved-changes-modal::unsaved-changes-modal.spa.stay') }}
+                {{ __('filament-unsaved-changes-modal::unsaved-changes-modal.navigation.stay') }}
             </x-filament::button>
 
             <x-filament::button
                 color="danger"
                 type="button"
-                x-on:click="window.filamentUnsavedChangesModal && window.filamentUnsavedChangesModal.leave()"
+                x-on:click="window.filamentUnsavedChangesModal?.leave()"
             >
-                {{ __('filament-unsaved-changes-modal::unsaved-changes-modal.spa.leave') }}
+                {{ __('filament-unsaved-changes-modal::unsaved-changes-modal.navigation.leave') }}
             </x-filament::button>
         </div>
     </x-slot>

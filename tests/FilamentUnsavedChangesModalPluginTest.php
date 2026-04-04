@@ -4,7 +4,7 @@ use AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin;
 use Filament\Panel;
 use Filament\View\PanelsRenderHook;
 
-it('registers spa unsaved changes render hooks on the panel', function () {
+it('registers unsaved changes modal render hooks on the panel', function () {
     $panel = Panel::make()
         ->id('admin')
         ->path('admin');
