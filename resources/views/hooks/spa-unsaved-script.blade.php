@@ -12,25 +12,24 @@
                     return false
                 }
 
+                const hash = $wire?.savedDataHash
+                if (hash == null || hash === '') {
+                    return false
+                }
+
+                if ($wire?.data === undefined) {
+                    return false
+                }
+
                 return (
-                    window.jsMd5(JSON.stringify($wire.data).replace(/\\/g, '')) !==
-                    $wire.savedDataHash
+                    window.jsMd5(JSON.stringify($wire.data).replace(/\\/g, '')) !== hash
                 )
             }
 
-            let pendingNavigation = null
+            let pendingHref = null
 
-            const uriFromNavigateDetail = (detail) => {
-                const url = detail?.url
-                if (! url) {
-                    return null
-                }
-                if (url instanceof URL) {
-                    return url.pathname + url.search + url.hash
-                }
-
-                return String(url)
-            }
+            /** Skip the next beforeunload prompt (user already confirmed in our modal). */
+            let bypassBeforeUnloadOnce = false
 
             const openModal = () => {
                 const root = document.getElementById(modalId)
@@ -58,28 +57,41 @@
                 )
             }
 
-            window.filamentUnsavedChangesModalSpa = {
-                stay() {
-                    pendingNavigation = null
+            window.filamentUnsavedChangesModal = {
+                stay: function () {
+                    pendingHref = null
                     closeModal()
                 },
-                leave() {
-                    const target = pendingNavigation
-                    pendingNavigation = null
+                leave: function () {
+                    const href = pendingHref
+                    pendingHref = null
                     closeModal()
-                    if (! target?.uri || ! window.Alpine?.navigate) {
+                    if (! href) {
                         return
                     }
-
-                    queueMicrotask(() => {
-                        window.Alpine.navigate(target.uri, {
-                            preserveScroll: target.preserveScroll ?? false,
-                        })
-                    })
+                    bypassBeforeUnloadOnce = true
+                    window.setTimeout(function () {
+                        window.location.assign(href)
+                    }, 0)
                 },
             }
 
-            document.addEventListener('livewire:navigate', (event) => {
+            const hrefFromNavigateDetail = function (detail) {
+                const url = detail && detail.url
+                if (! url) {
+                    return null
+                }
+                if (url instanceof URL) {
+                    return url.href
+                }
+                try {
+                    return new URL(String(url), window.location.href).href
+                } catch (e) {
+                    return null
+                }
+            }
+
+            document.addEventListener('livewire:navigate', function (event) {
                 if (typeof resolveLivewireComponentUsing() === 'undefined') {
                     return
                 }
@@ -88,17 +100,24 @@
                     return
                 }
 
-                event.preventDefault()
-
-                pendingNavigation = {
-                    uri: uriFromNavigateDetail(event.detail),
-                    preserveScroll: event.detail?.preserveScroll ?? false,
+                const href = hrefFromNavigateDetail(event.detail)
+                if (! href) {
+                    return
                 }
 
+                event.preventDefault()
+
+                pendingHref = href
                 openModal()
             })
 
-            window.addEventListener('beforeunload', (event) => {
+            window.addEventListener('beforeunload', function (event) {
+                if (bypassBeforeUnloadOnce) {
+                    bypassBeforeUnloadOnce = false
+
+                    return
+                }
+
                 if (! shouldPreventNavigation()) {
                     return
                 }

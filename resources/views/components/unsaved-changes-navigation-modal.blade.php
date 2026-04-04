@@ -13,8 +13,7 @@
         <x-filament::button
             color="gray"
             type="button"
-            x-data="{}"
-            x-on:click="if (window.filamentUnsavedChangesModalSpa?.stay) window.filamentUnsavedChangesModalSpa.stay()"
+            x-on:click="window.filamentUnsavedChangesModal && window.filamentUnsavedChangesModal.stay()"
         >
             {{ __('filament-unsaved-changes-modal::unsaved-changes-modal.spa.stay') }}
         </x-filament::button>
@@ -22,8 +21,7 @@
         <x-filament::button
             color="danger"
             type="button"
-            x-data="{}"
-            x-on:click="if (window.filamentUnsavedChangesModalSpa?.leave) window.filamentUnsavedChangesModalSpa.leave()"
+            x-on:click="window.filamentUnsavedChangesModal && window.filamentUnsavedChangesModal.leave()"
         >
             {{ __('filament-unsaved-changes-modal::unsaved-changes-modal.spa.leave') }}
         </x-filament::button>

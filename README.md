@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/azgasim/filament-unsaved-changes-modal.svg?style=flat-square)](https://packagist.org/packages/azgasim/filament-unsaved-changes-modal)
 
-Filament v5 plugin that replaces the browser `confirm()` used for **SPA in-panel navigation** when a form has unsaved changes, with a **Filament modal** (same dirty-detection logic as core). Closing the browser tab still uses the native `beforeunload` prompt (browser limitation). See [Filament unsaved changes alerts](https://filamentphp.com/docs/5.x/panel-configuration#unsaved-changes-alerts).
+Filament v5 plugin that replaces the browser `confirm()` used for **SPA in-panel navigation** when a form has unsaved changes, with a **Filament modal** (same dirty logic as core). **Leave** continues with a normal full navigation via `window.location.assign` so it always matches “OK” on the native dialog. Closing the tab still uses the native `beforeunload` prompt. Requires `->spa()` and `->unsavedChangesAlerts()`. See [Filament unsaved changes alerts](https://filamentphp.com/docs/5.x/panel-configuration#unsaved-changes-alerts).
 
 ## Installation
 
