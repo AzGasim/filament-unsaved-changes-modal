@@ -1,6 +1,11 @@
 @php
+    /** @var \AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin $plugin */
     $modalId = \AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin::MODAL_DOM_ID;
-    $modalWidth = config('unsaved-changes-modal.modal_width', 'lg');
+    $modalWidth = $plugin->getModalWidth();
+    $modalIcon = $plugin->getModalIcon();
+    $modalIconColor = $plugin->getModalIconColor();
+    $stayButtonColor = $plugin->getStayButtonColor();
+    $leaveButtonColor = $plugin->getLeaveButtonColor();
 @endphp
 
 <x-filament::modal
@@ -10,14 +15,14 @@
     :width="$modalWidth"
     alignment="center"
     footer-actions-alignment="center"
-    :icon="\Filament\Support\Icons\Heroicon::OutlinedExclamationTriangle"
-    icon-color="warning"
+    :icon="$modalIcon"
+    :icon-color="$modalIconColor"
     :close-by-clicking-away="false"
 >
     <x-slot name="footer">
         <div class="fi-modal-footer-actions">
             <x-filament::button
-                color="gray"
+                :color="$stayButtonColor"
                 type="button"
                 x-on:click="window.filamentUnsavedChangesModal?.stay()"
             >
@@ -25,7 +30,7 @@
             </x-filament::button>
 
             <x-filament::button
-                color="danger"
+                :color="$leaveButtonColor"
                 type="button"
                 x-on:click="window.filamentUnsavedChangesModal?.leave()"
             >

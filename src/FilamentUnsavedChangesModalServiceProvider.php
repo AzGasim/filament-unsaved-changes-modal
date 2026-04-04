@@ -16,14 +16,8 @@ class FilamentUnsavedChangesModalServiceProvider extends PackageServiceProvider
     {
         $package->name(static::$name)
             ->hasInstallCommand(function (InstallCommand $command) {
-                $command
-                    ->publishConfigFile()
-                    ->askToStarRepoOnGitHub('azgasim/filament-unsaved-changes-modal');
+                $command->askToStarRepoOnGitHub('azgasim/filament-unsaved-changes-modal');
             });
-
-        if (file_exists($package->basePath('/../config/unsaved-changes-modal.php'))) {
-            $package->hasConfigFile('unsaved-changes-modal');
-        }
 
         if (file_exists($package->basePath('/../resources/lang'))) {
             $package->hasTranslations();

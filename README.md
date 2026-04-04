@@ -34,13 +34,22 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-Publish the config (optional) to change the modal width (`modal_width`, Filament width values such as `md`, `lg`, `2xl`). The modal’s HTML id is fixed in code (`FilamentUnsavedChangesModalPlugin::MODAL_DOM_ID`); publish the [views](resources/views) if you must change it.
+Optional appearance (chain only what you need; the rest uses [package defaults](src/FilamentUnsavedChangesModalPlugin.php) on the plugin class):
 
-```bash
-php artisan vendor:publish --tag="filament-unsaved-changes-modal-config"
+```php
+FilamentUnsavedChangesModalPlugin::make()
+    ->modalWidth('xl')
+    ->modalIcon('OutlinedExclamationTriangle')
+    ->modalIconColor('danger')
+    ->stayButtonColor('gray')
+    ->leaveButtonColor('warning'),
 ```
 
-Publish [translations](resources/lang/en/unsaved-changes-modal.php) with `filament-unsaved-changes-modal-translations`. Enable unsaved alerts (`->unsavedChangesAlerts()`) on your panel. Add `->spa()` if you use Filament SPA navigation.
+**Copy** (heading, description, button labels): [translations](resources/lang/en/unsaved-changes-modal.php) (`filament-unsaved-changes-modal::unsaved-changes-modal.navigation.*`) or publish with `filament-unsaved-changes-modal-translations`.
+
+The modal HTML id is fixed (`FilamentUnsavedChangesModalPlugin::MODAL_DOM_ID`); publish [views](resources/views) to change it.
+
+Enable unsaved alerts (`->unsavedChangesAlerts()`) on your panel. Add `->spa()` if you use Filament SPA navigation.
 
 ## Testing
 
