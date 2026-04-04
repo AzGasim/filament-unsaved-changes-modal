@@ -37,12 +37,14 @@ public function panel(Panel $panel): Panel
 Optional appearance (chain only what you need; the rest uses [package defaults](src/FilamentUnsavedChangesModalPlugin.php) on the plugin class):
 
 ```php
-FilamentUnsavedChangesModalPlugin::make()
-    ->modalWidth('xl')
-    ->modalIcon('OutlinedExclamationTriangle')
-    ->modalIconColor('danger')
-    ->stayButtonColor('gray')
-    ->leaveButtonColor('warning'),
+->plugin(
+    FilamentUnsavedChangesModalPlugin::make()
+        ->modalWidth('xl')
+        ->modalIcon('OutlinedExclamationTriangle')
+        ->modalIconColor('danger')
+        ->stayButtonColor('gray')
+        ->leaveButtonColor('warning'),
+)
 ```
 
 **Copy** (heading, description, button labels): [translations](resources/lang/en/unsaved-changes-modal.php) (`filament-unsaved-changes-modal::unsaved-changes-modal.navigation.*`) or publish with `filament-unsaved-changes-modal-translations`.
@@ -56,6 +58,8 @@ Enable unsaved alerts (`->unsavedChangesAlerts()`) on your panel. Add `->spa()` 
 ```bash
 composer test
 ```
+
+Runs Pest **without** code coverage so you do not need Xdebug or PCOV. For coverage reports locally, install **PCOV** (or enable Xdebug’s coverage mode) and run `composer test:coverage`.
 
 ## Changelog
 

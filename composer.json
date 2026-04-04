@@ -55,7 +55,8 @@
         "analyse": "phpstan analyse",
         "lint": "pint",
         "refactor": "rector",
-        "test": "pest",
+        "test": "pest --no-coverage",
+        "test:coverage": "pest --coverage",
         "test:lint": "pint --test",
         "test:refactor": "rector --dry-run"
     },
