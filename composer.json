@@ -1,13 +1,14 @@
 {
     "name": "azgasim/filament-unsaved-changes-modal",
-    "description": "This is my package filament-unsaved-changes-modal",
+    "description": "Filament plugin: unsaved-changes prompts as Filament modals instead of browser confirm dialogs (Filament v5).",
     "keywords": [
         "AzGasim",
         "laravel",
         "filamentphp",
         "filament",
         "filament-plugin",
-        "filament-unsaved-changes-modal"
+        "filament-unsaved-changes-modal",
+        "unsaved-changes"
     ],
     "homepage": "https://github.com/azgasim/filament-unsaved-changes-modal",
     "support": {
@@ -41,8 +42,7 @@
     },
     "autoload": {
         "psr-4": {
-            "AzGasim\\FilamentUnsavedChangesModal\\": "src/",
-            "AzGasim\\FilamentUnsavedChangesModal\\Database\\Factories\\": "database/factories/"
+            "AzGasim\\FilamentUnsavedChangesModal\\": "src/"
         }
     },
     "autoload-dev": {
@@ -63,10 +63,7 @@
         "laravel": {
             "providers": [
                 "AzGasim\\FilamentUnsavedChangesModal\\FilamentUnsavedChangesModalServiceProvider"
-            ],
-            "aliases": {
-                "FilamentUnsavedChangesModal": "AzGasim\\FilamentUnsavedChangesModal\\Facades\\FilamentUnsavedChangesModal"
-            }
+            ]
         }
     },
     "config": {

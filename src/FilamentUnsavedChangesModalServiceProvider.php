@@ -2,19 +2,9 @@
 
 namespace AzGasim\FilamentUnsavedChangesModal;
 
-use Filament\Support\Assets\AlpineComponent;
-use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
-use Filament\Support\Facades\FilamentIcon;
-use Illuminate\Filesystem\Filesystem;
-use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use AzGasim\FilamentUnsavedChangesModal\Commands\FilamentUnsavedChangesModalCommand;
-use AzGasim\FilamentUnsavedChangesModal\Testing\TestsFilamentUnsavedChangesModal;
 
 class FilamentUnsavedChangesModalServiceProvider extends PackageServiceProvider
 {
@@ -24,18 +14,10 @@ class FilamentUnsavedChangesModalServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package->name(static::$name)
-            ->hasCommands($this->getCommands())
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('azgasim/filament-unsaved-changes-modal');
             });
 
@@ -43,10 +25,6 @@ class FilamentUnsavedChangesModalServiceProvider extends PackageServiceProvider
 
         if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
             $package->hasConfigFile();
-        }
-
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
         }
 
         if (file_exists($package->basePath('/../resources/lang'))) {
@@ -60,93 +38,5 @@ class FilamentUnsavedChangesModalServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void {}
 
-    public function packageBooted(): void
-    {
-        // Asset Registration
-        FilamentAsset::register(
-            $this->getAssets(),
-            $this->getAssetPackageName()
-        );
-
-        FilamentAsset::registerScriptData(
-            $this->getScriptData(),
-            $this->getAssetPackageName()
-        );
-
-        // Icon Registration
-        FilamentIcon::register($this->getIcons());
-
-        // Handle Stubs
-        if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
-                $this->publishes([
-                    $file->getRealPath() => base_path("stubs/filament-unsaved-changes-modal/{$file->getFilename()}"),
-                ], 'filament-unsaved-changes-modal-stubs');
-            }
-        }
-
-        // Testing
-        Testable::mixin(new TestsFilamentUnsavedChangesModal);
-    }
-
-    protected function getAssetPackageName(): ?string
-    {
-        return 'azgasim/filament-unsaved-changes-modal';
-    }
-
-    /**
-     * @return array<Asset>
-     */
-    protected function getAssets(): array
-    {
-        return [
-            // AlpineComponent::make('filament-unsaved-changes-modal', __DIR__ . '/../resources/dist/components/filament-unsaved-changes-modal.js'),
-            // Css::make('filament-unsaved-changes-modal-styles', __DIR__ . '/../resources/dist/filament-unsaved-changes-modal.css'),
-            // Js::make('filament-unsaved-changes-modal-scripts', __DIR__ . '/../resources/dist/filament-unsaved-changes-modal.js'),
-        ];
-    }
-
-    /**
-     * @return array<class-string>
-     */
-    protected function getCommands(): array
-    {
-        return [
-            FilamentUnsavedChangesModalCommand::class,
-        ];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getIcons(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getRoutes(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function getScriptData(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getMigrations(): array
-    {
-        return [
-            'create_filament-unsaved-changes-modal_table',
-        ];
-    }
+    public function packageBooted(): void {}
 }
