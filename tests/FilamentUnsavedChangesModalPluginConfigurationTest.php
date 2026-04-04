@@ -27,3 +27,10 @@ it('uses fluent values when chained', function () {
         ->and($plugin->getStayButtonColor())->toBe('primary')
         ->and($plugin->getLeaveButtonColor())->toBe('warning');
 });
+
+it('accepts a Heroicon enum in modalIcon', function () {
+    $plugin = FilamentUnsavedChangesModalPlugin::make()
+        ->modalIcon(Heroicon::ArchiveBox);
+
+    expect($plugin->getModalIcon())->toBe(Heroicon::ArchiveBox);
+});

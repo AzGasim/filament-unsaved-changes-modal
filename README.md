@@ -1,18 +1,17 @@
 # Filament Unsaved Changes Modal
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/azgasim/filament-unsaved-changes-modal.svg?style=flat-square)](https://packagist.org/packages/azgasim/filament-unsaved-changes-modal)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/azgasim/filament-unsaved-changes-modal.svg?style=flat-square)](https://packagist.org/packages/azgasim/filament-unsaved-changes-modal)
+[![GitHub Tests](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Code style](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions)
 
-Filament v5 plugin that replaces the browser `confirm()` used when a form has unsaved changes (same dirty hash logic as core) with a **Filament modal**.
+In the **Filament panel**, leaving a dirty form shows a **Filament modal** instead of the browser’s blocking dialog. **Reload** and **closing the tab** still use the **browser’s normal native prompt** (that cannot be a custom modal).
 
-- **SPA (`->spa()`):** intercepts `livewire:navigate`; after **Leave**, uses `Alpine.navigate()` when available, otherwise `location.assign()`.
-- **Non-SPA:** there is no `livewire:navigate`; the browser cannot show a custom UI on `beforeunload`. This package intercepts **left-clicks** on same-origin links inside the panel (`.fi-body`) while the form is dirty, opens the same modal, then navigates with `location.assign()` if the user confirms. **Tab close, refresh, typing a new URL,** and similar still use the native `beforeunload` prompt only.
+Uses the same behaviour as Filament’s [`unsavedChangesAlerts()`](https://filamentphp.com/docs/5.x/panel-configuration#unsaved-changes-alerts); this package only swaps the confirmation UI in the panel.
 
-Requires `->unsavedChangesAlerts()`. SPA mode is optional. See [Filament unsaved changes alerts](https://filamentphp.com/docs/5.x/panel-configuration#unsaved-changes-alerts).
-
-Add `data-skip-unsaved-changes-modal` on a link to bypass the prompt for that anchor.
+| PHP      | ^8.2   |
+| -------- | ------ |
+| Filament | ^5.0   |
 
 ## Installation
 
@@ -20,38 +19,66 @@ Add `data-skip-unsaved-changes-modal` on a link to bypass the prompt for that an
 composer require azgasim/filament-unsaved-changes-modal
 ```
 
-Laravel auto-discovers [`FilamentUnsavedChangesModalServiceProvider`](src/FilamentUnsavedChangesModalServiceProvider.php). Register the plugin on your panel (e.g. in `App\Providers\Filament\AdminPanelProvider`):
+Laravel auto-discovers the package service provider.
+
+## Usage
+
+1. Enable unsaved-change alerts on your panel:
+
+    ```php
+    $panel->unsavedChangesAlerts();
+    ```
+
+2. Register the plugin:
+
+    ```php
+    use AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin;
+
+    $panel->plugins([
+        FilamentUnsavedChangesModalPlugin::make(),
+    ]);
+    ```
+
+## Customization
+
+### Modal appearance
+
+Unconfigured values fall back to [`DEFAULT_*`](src/FilamentUnsavedChangesModalPlugin.php).
 
 ```php
-use AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin;
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->plugin(FilamentUnsavedChangesModalPlugin::make());
-}
+FilamentUnsavedChangesModalPlugin::make()
+    ->modalWidth('xl')
+    ->modalIcon('OutlinedExclamationTriangle')
+    ->modalIconColor('danger')
+    ->stayButtonColor('gray')
+    ->leaveButtonColor('warning')
 ```
 
-Optional appearance (chain only what you need; the rest uses [package defaults](src/FilamentUnsavedChangesModalPlugin.php) on the plugin class):
+| Method | Values |
+| ------ | ------ |
+| `modalWidth()` | `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl`, `7xl`, `full`, `min`, `max`, `fit`, `prose`, `screen-sm`, `screen-md`, `screen-lg`, `screen-xl`, `screen-2xl`, `screen` |
+| `modalIcon()` | `Heroicon::OutlinedExclamationTriangle` or `'OutlinedExclamationTriangle'` (not `o-exclamation-triangle`) |
+| `modalIconColor()`, `stayButtonColor()`, `leaveButtonColor()` | `primary`, `success`, `danger`, `warning`, `info`, `gray`, … (`$panel->colors()` keys) |
 
-```php
-->plugin(
-    FilamentUnsavedChangesModalPlugin::make()
-        ->modalWidth('xl')
-        ->modalIcon('OutlinedExclamationTriangle')
-        ->modalIconColor('danger')
-        ->stayButtonColor('gray')
-        ->leaveButtonColor('warning'),
-)
+### Translations
+
+Keys: `filament-unsaved-changes-modal::unsaved-changes-modal.navigation.*` ([English file](resources/lang/en/unsaved-changes-modal.php)).
+
+```bash
+php artisan vendor:publish --tag="filament-unsaved-changes-modal-translations"
 ```
 
-**Copy** (heading, description, button labels): [translations](resources/lang/en/unsaved-changes-modal.php) (`filament-unsaved-changes-modal::unsaved-changes-modal.navigation.*`) or publish with `filament-unsaved-changes-modal-translations`.
+### Views
 
-The modal HTML id is fixed (`FilamentUnsavedChangesModalPlugin::MODAL_DOM_ID`); publish [views](resources/views) to change it.
+```bash
+php artisan vendor:publish --tag="filament-unsaved-changes-modal-views"
+```
 
-Enable unsaved alerts (`->unsavedChangesAlerts()`) on your panel. Add `->spa()` if you use Filament SPA navigation.
+If you change the modal’s DOM id in a published view, keep it in sync with [`FilamentUnsavedChangesModalPlugin::MODAL_DOM_ID`](src/FilamentUnsavedChangesModalPlugin.php) and the script hook view.
+
+### Skipping the prompt for a link
+
+Add `data-skip-unsaved-changes-modal` on the `<a>`.
 
 ## Testing
 
@@ -59,25 +86,25 @@ Enable unsaved alerts (`->unsavedChangesAlerts()`) on your panel. Add `->spa()` 
 composer test
 ```
 
-Runs Pest **without** code coverage so you do not need Xdebug or PCOV. For coverage reports locally, install **PCOV** (or enable Xdebug’s coverage mode) and run `composer test:coverage`.
+Coverage (requires PCOV or Xdebug): `composer test:coverage`
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+[CHANGELOG.md](CHANGELOG.md)
 
 ## Contributing
 
-Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+[CONTRIBUTING.md](.github/CONTRIBUTING.md)
 
-## Security Vulnerabilities
+## Security
 
-Please review [our security policy](.github/SECURITY.md) on how to report security vulnerabilities.
+[SECURITY.md](.github/SECURITY.md)
 
 ## Credits
 
 - [Aziz Gasim](https://github.com/AzGasim)
-- [All Contributors](../../contributors)
+- [Contributors](https://github.com/azgasim/filament-unsaved-changes-modal/graphs/contributors)
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+[MIT](LICENSE.md)

@@ -30,9 +30,9 @@ class FilamentUnsavedChangesModalPlugin implements Plugin
     protected ?string $modalWidth = null;
 
     /**
-     * Heroicon enum case name (e.g. `OutlinedExclamationTriangle`).
+     * Heroicon enum or PHP case name string (e.g. `OutlinedExclamationTriangle`).
      */
-    protected ?string $modalIcon = null;
+    protected string | Heroicon | null $modalIcon = null;
 
     protected ?string $modalIconColor = null;
 
@@ -56,11 +56,11 @@ class FilamentUnsavedChangesModalPlugin implements Plugin
     }
 
     /**
-     * @param  string  $heroiconCaseName  PHP case name from {@see Heroicon} (e.g. `OutlinedExclamationTriangle`).
+     * @param  string|Heroicon  $heroicon  {@see Heroicon} case or its PHP case name as string.
      */
-    public function modalIcon(string $heroiconCaseName): static
+    public function modalIcon(string | Heroicon $heroicon): static
     {
-        $this->modalIcon = $heroiconCaseName;
+        $this->modalIcon = $heroicon;
 
         return $this;
     }
@@ -96,6 +96,10 @@ class FilamentUnsavedChangesModalPlugin implements Plugin
 
     public function getModalIcon(): Heroicon
     {
+        if ($this->modalIcon instanceof Heroicon) {
+            return $this->modalIcon;
+        }
+
         return HeroiconResolver::fromCaseName($this->modalIcon, Heroicon::OutlinedExclamationTriangle);
     }
 
