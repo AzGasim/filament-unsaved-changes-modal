@@ -19,7 +19,7 @@ class FilamentUnsavedChangesModalPlugin implements Plugin
         $panel
             ->renderHook(
                 PanelsRenderHook::PAGE_START,
-                fn (): Htmlable => view('filament-unsaved-changes-modal::hooks.spa-unsaved-script'),
+                fn (): Htmlable => view('filament-unsaved-changes-modal::hooks.unsaved-changes-script-overrides'),
             )
             ->renderHook(
                 PanelsRenderHook::BODY_END,
