@@ -113,6 +113,81 @@
                 }
 
                 if (spaMode) {
+                    let pendingSkipNavigateHref = null
+
+                    document.addEventListener(
+                        'click',
+                        function (event) {
+                            if (event.defaultPrevented || event.button !== 0) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+                            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+
+                            const anchor = event.target.closest('a[href]')
+                            if (! anchor) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+                            if (! anchor.closest('[data-skip-unsaved-changes-modal]')) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+                            if (anchor.getAttribute('target') === '_blank' || anchor.hasAttribute('download')) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+
+                            const hrefAttr = anchor.getAttribute('href')
+                            if (! hrefAttr || hrefAttr.startsWith('#')) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+                            if (isDangerousHrefAttribute(hrefAttr)) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+                            if (! anchor.closest('.fi-body')) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+
+                            let nextUrl
+                            try {
+                                nextUrl = new URL(anchor.href)
+                            } catch {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+
+                            if (! isAllowedHttpNavigation(nextUrl)) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+                            if (nextUrl.origin !== window.location.origin) {
+                                pendingSkipNavigateHref = null
+
+                                return
+                            }
+
+                            pendingSkipNavigateHref = nextUrl.href
+                        },
+                        true,
+                    )
+
                     document.addEventListener('livewire:navigate', function (event) {
                         try {
                             if (typeof resolveLivewireComponentUsing() === 'undefined') {
@@ -128,11 +203,18 @@
                             return
                         }
 
+                        const href = hrefFromNavigateDetail(event.detail)
+                        const skipForHref = pendingSkipNavigateHref
+                        pendingSkipNavigateHref = null
+
+                        if (skipForHref && href && skipForHref === href) {
+                            return
+                        }
+
                         if (! shouldPreventNavigation()) {
                             return
                         }
 
-                        const href = hrefFromNavigateDetail(event.detail)
                         if (! href) {
                             return
                         }
