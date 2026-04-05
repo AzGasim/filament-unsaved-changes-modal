@@ -1,4 +1,4 @@
-![Unsaved changes: Filament modal instead of the browser dialog](art/unsaved_changes_modal_thumb.png)
+![Unsaved changes: Filament modal instead of the browser dialog](art/unsaved_thumb.png)
 
 # Filament Unsaved Changes Modal
 
