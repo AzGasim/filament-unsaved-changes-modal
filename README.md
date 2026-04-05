@@ -6,7 +6,7 @@
 [![Packagist Downloads](https://img.shields.io/packagist/dt/azgasim/filament-unsaved-changes-modal?style=flat-square)](https://packagist.org/packages/azgasim/filament-unsaved-changes-modal)
 [![Tests](https://github.com/AzGasim/filament-unsaved-changes-modal/actions/workflows/run-tests.yml/badge.svg)](https://github.com/AzGasim/filament-unsaved-changes-modal/actions/workflows/run-tests.yml)
 [![Code style](https://github.com/AzGasim/filament-unsaved-changes-modal/actions/workflows/fix-php-code-style-issues.yml/badge.svg)](https://github.com/AzGasim/filament-unsaved-changes-modal/actions/workflows/fix-php-code-style-issues.yml)
-[![License](https://img.shields.io/github/license/azgasim/filament-unsaved-changes-modal?style=flat-square)](LICENSE.md)
+[![License](https://img.shields.io/github/license/Azgasim/filament-unsaved-changes-modal?style=flat-square)](LICENSE.md)
 
 In the Filament panel, leaving a dirty form shows a **Filament modal**
 instead of the browser’s blocking confirmation dialog.
