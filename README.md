@@ -40,8 +40,6 @@ Laravel auto-discovers the package service provider.
 
 You need **both** `unsavedChangesAlerts()` and this plugin on the same panel.
 
-**In your panel provider** (e.g. `AdminPanelProvider::panel()` — keep your existing `->path()`, `->login()`, middleware, etc.):
-
 ```php
 use AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin;
 
