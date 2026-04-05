@@ -1,5 +1,6 @@
 {
     "name": "azgasim/filament-unsaved-changes-modal",
+    "type": "library",
     "description": "Filament plugin: unsaved-changes prompts as Filament modals instead of browser confirm dialogs (Filament v5).",
     "keywords": [
         "AzGasim",
@@ -8,7 +9,10 @@
         "filament",
         "filament-plugin",
         "filament-unsaved-changes-modal",
-        "unsaved-changes"
+        "unsaved-changes",
+        "unsaved-changes-alert",
+        "modal",
+        "livewire"
     ],
     "homepage": "https://github.com/azgasim/filament-unsaved-changes-modal",
     "support": {
