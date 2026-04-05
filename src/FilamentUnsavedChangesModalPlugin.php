@@ -9,7 +9,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\Support\Htmlable;
 
-class FilamentUnsavedChangesModalPlugin implements Plugin
+final class FilamentUnsavedChangesModalPlugin implements Plugin
 {
     public const ID = 'filament-unsaved-changes-modal';
 
@@ -138,7 +138,7 @@ class FilamentUnsavedChangesModalPlugin implements Plugin
 
     public static function make(): static
     {
-        return new static;
+        return new self;
     }
 
     /**
