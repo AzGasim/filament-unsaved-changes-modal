@@ -16,7 +16,7 @@ Reloading or closing the tab still uses the native browser prompt
 
 ![Filament unsaved changes modal preview](art/preview.png)
 
-Works with **Filament SPA** (`livewire:navigate`) and **normal full-page** navigation (same-origin link clicks in the panel body). Uses the same dirty-state rules as Filament’s `[unsavedChangesAlerts()](https://filamentphp.com/docs/5.x/panel-configuration#unsaved-changes-alerts)`; this package only swaps the confirmation UI.
+Works with **Filament SPA** (`livewire:navigate`) and **normal full-page** navigation (same-origin link clicks in the panel body). Uses the same dirty-state rules as Filament’s [`unsavedChangesAlerts()`](https://filamentphp.com/docs/5.x/panel-configuration#unsaved-changes-alerts); this package only swaps the confirmation UI.
 
 ### Compatibility
 
@@ -33,8 +33,6 @@ Requires **Filament 5.3.5+** due to a known XSS vulnerability ([CVE-2026-33080](
 ```bash
 composer require azgasim/filament-unsaved-changes-modal
 ```
-
-Laravel auto-discovers the package service provider.
 
 ## Usage
 
