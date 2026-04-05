@@ -1,7 +1,7 @@
 {
     "name": "azgasim/filament-unsaved-changes-modal",
     "type": "library",
-    "description": "Filament plugin: unsaved-changes prompts as Filament modals instead of browser confirm dialogs (Filament v5).",
+    "description": "Filament plugin: unsaved-changes prompts as Filament modals instead of browser confirm dialogs.",
     "keywords": [
         "AzGasim",
         "laravel",
@@ -79,6 +79,5 @@
             "phpstan/extension-installer": true
         }
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }
