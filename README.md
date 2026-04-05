@@ -76,7 +76,7 @@ There is **no** published config file; configure the plugin with the methods abo
 
 ### Translations
 
-Keys: `filament-unsaved-changes-modal::unsaved-changes-modal.navigation.`* — see [English](resources/lang/en/unsaved-changes-modal.php) (and **German** `de` is shipped in the package).
+Heading, description, and the **Stay** / **Leave** labels are only customizable via **translations** (no plugin methods for copy). Publish and edit `unsaved-changes-modal.php` under your locale — keys live in `navigation.*`; see [English](resources/lang/en/unsaved-changes-modal.php) (package also ships `de`).
 
 ```bash
 php artisan vendor:publish --tag="filament-unsaved-changes-modal-translations"
