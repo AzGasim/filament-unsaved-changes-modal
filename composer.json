@@ -14,10 +14,10 @@
         "modal",
         "livewire"
     ],
-    "homepage": "https://github.com/azgasim/filament-unsaved-changes-modal",
+    "homepage": "https://github.com/AzGasim/filament-unsaved-changes-modal",
     "support": {
-        "issues": "https://github.com/azgasim/filament-unsaved-changes-modal/issues",
-        "source": "https://github.com/azgasim/filament-unsaved-changes-modal"
+        "issues": "https://github.com/AzGasim/filament-unsaved-changes-modal/issues",
+        "source": "https://github.com/AzGasim/filament-unsaved-changes-modal"
     },
     "license": "MIT",
     "authors": [
