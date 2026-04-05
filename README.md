@@ -1,19 +1,15 @@
+![Unsaved changes: Filament modal instead of the browser dialog](art/unsaved_changes_modal_thumb.png)
+
 # Filament Unsaved Changes Modal
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/azgasim/filament-unsaved-changes-modal.svg?style=flat-square)](https://packagist.org/packages/azgasim/filament-unsaved-changes-modal)
 [![Total Downloads](https://img.shields.io/packagist/dt/azgasim/filament-unsaved-changes-modal.svg?style=flat-square)](https://packagist.org/packages/azgasim/filament-unsaved-changes-modal)
-[![GitHub Tests](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/run-tests.yml?branch=5.x&label=tests&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions?query=workflow%3Arun-tests+branch%3A5.x)
-[![Code style](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/fix-php-code-style-issues.yml?branch=5.x&label=code%20style&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions)
+[![Tests](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/run-tests.yml?label=tests&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions/workflows/run-tests.yml)
+[![Code style](https://img.shields.io/github/actions/workflow/status/azgasim/filament-unsaved-changes-modal/fix-php-code-style-issues.yml?label=code%20style&style=flat-square)](https://github.com/azgasim/filament-unsaved-changes-modal/actions/workflows/fix-php-code-style-issues.yml)
 
 In the **Filament panel**, leaving a dirty form shows a **Filament modal** instead of the browser’s blocking dialog. **Reload** and **closing the tab** still use the **browser’s normal native prompt** (that cannot be a custom modal).
 
 Uses the same behaviour as Filament’s [`unsavedChangesAlerts()`](https://filamentphp.com/docs/5.x/panel-configuration#unsaved-changes-alerts); this package only swaps the confirmation UI in the panel.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/azgasim/filament-unsaved-changes-modal/5.x/art/readme-preview.png" alt="Unsaved changes: Filament modal instead of the browser dialog" width="720">
-</p>
-
-_Screenshot file in the repo: [`art/readme-preview.png`](art/readme-preview.png). The URL above loads on Packagist and in IDE previews; GitHub renders the same image from the repo._
 
 | PHP      | ^8.2   |
 | -------- | ------ |
