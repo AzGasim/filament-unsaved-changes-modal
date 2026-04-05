@@ -38,7 +38,7 @@ Contributions are welcome and will be credited.
 - Target the **`5.x`** branch unless maintainers ask otherwise.
 - **One concern per PR** (feature or fix), small and reviewable.
 - Use a **clear title** and describe **what** changed and **why**.
-- CI is expected to pass (tests + Pint on GitHub Actions).
+- CI is expected to pass (tests, PHPStan, and Pint on GitHub Actions).
 
 ## Security
 
