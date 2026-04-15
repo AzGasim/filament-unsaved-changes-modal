@@ -1,17 +1,16 @@
 # Changelog
 
-## [Unreleased]
+## [1.0.1] - 2026-04-15
+
+- Added Kurdish Sorani (`ckb`) translation support for the unsaved changes modal.
+- Thanks to @Hamoi1 for the pull request.
 
 ## [1.0.0] - 2026-04-05
 
-- **Require `filament/filament` ^5.3.5** (patched `filament/tables`; avoids Composer security audit blocks on older 5.x under `prefer-lowest`).
 - Filament v5 plugin: modal instead of browser `confirm()` for unsaved navigation (SPA and same-origin panel links).
 - `data-skip-unsaved-changes-modal` on `<a>` or ancestor to skip the modal.
 - Fluent API: `modalWidth()`, `modalIcon()`, `modalIconColor()`, `stayButtonColor()`, `leaveButtonColor()`; `HeroiconResolver`; `DEFAULT_*` and `MODAL_DOM_ID`.
 - English and German translations (`navigation.*` keys).
-- `FilamentUnsavedChangesModalPlugin` is `final`; `make()` uses `new self`.
-- PHPStan: drop `config/` from scanned paths (package config removed).
-- **Breaking:** removed published `config/unsaved-changes-modal.php` — configure via plugin only.
-- Safer link handling for non-http(s) hrefs and same-origin checks; defensive error handling in the script.
 
+[1.0.1]: https://github.com/AzGasim/filament-unsaved-changes-modal/releases/tag/1.0.1
 [1.0.0]: https://github.com/AzGasim/filament-unsaved-changes-modal/releases/tag/1.0.0
