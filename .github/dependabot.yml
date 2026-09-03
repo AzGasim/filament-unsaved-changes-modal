@@ -10,3 +10,6 @@ updates:
       interval: "weekly"
     labels:
       - "dependencies"
+    cooldown:
+      default: 3
+      semver-major: 7
