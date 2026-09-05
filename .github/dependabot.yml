@@ -11,5 +11,5 @@ updates:
     labels:
       - "dependencies"
     cooldown:
-      default: 3
-      semver-major: 7
+      default-days: 3
+      semver-major-days: 7
