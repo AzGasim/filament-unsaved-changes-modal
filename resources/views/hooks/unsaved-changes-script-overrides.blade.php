@@ -323,7 +323,7 @@
                 })
             }
 
-            window.setUpSpaModeUnsavedDataChangesAlert = function ({
+            function setUpSpaModeUnsavedDataChangesAlert({
                 body,
                 resolveLivewireComponentUsing,
                 $wire,
@@ -336,7 +336,7 @@
                 })
             }
 
-            window.setUpUnsavedDataChangesAlert = function ({ $wire }) {
+            function setUpUnsavedDataChangesAlert({ $wire }) {
                 buildApi({
                     $wire,
                     bodyText: @js($unsavedBody),
@@ -344,6 +344,12 @@
                     resolveLivewireComponentUsing: () => undefined,
                 })
             }
+
+            // Filament >= 5.10 calls the prefixed names, older releases the unprefixed ones.
+            window.setUpFilamentSpaModeUnsavedDataChangesAlert = setUpSpaModeUnsavedDataChangesAlert
+            window.setUpFilamentUnsavedDataChangesAlert = setUpUnsavedDataChangesAlert
+            window.setUpSpaModeUnsavedDataChangesAlert = setUpSpaModeUnsavedDataChangesAlert
+            window.setUpUnsavedDataChangesAlert = setUpUnsavedDataChangesAlert
         })()
     </script>
 @endscript
